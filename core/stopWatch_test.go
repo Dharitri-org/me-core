@@ -4,12 +4,13 @@ import (
 	"testing"
 	"time"
 
+	"github.com/Dharitri-org/me-core/core/mock"
 	"github.com/stretchr/testify/assert"
 )
 
 const identifier = "identifier"
 
-var log = NewConsoleLogger()
+var log = &mock.LoggerMock{}
 
 func TestStopWatch_Start(t *testing.T) {
 	t.Parallel()

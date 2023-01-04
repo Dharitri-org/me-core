@@ -6,7 +6,6 @@ import (
 	"time"
 
 	"github.com/Dharitri-org/me-core/core"
-	core2 "github.com/Dharitri-org/me-core/core"
 	"github.com/Dharitri-org/me-core/core/check"
 	"github.com/Dharitri-org/me-core/data/endProcess"
 )
@@ -14,14 +13,14 @@ import (
 type watchdog struct {
 	alarmScheduler      core.TimersScheduler
 	chanStopNodeProcess chan endProcess.ArgEndProcess
-	log                 core2.Logger
+	log                 core.Logger
 }
 
 // NewWatchdog creates a new instance of WatchdogTimer
 func NewWatchdog(
 	alarmScheduler core.TimersScheduler,
 	chanStopNodeProcess chan endProcess.ArgEndProcess,
-	log core2.Logger,
+	log core.Logger,
 ) (core.WatchdogTimer, error) {
 	if check.IfNil(alarmScheduler) {
 		return nil, ErrNilAlarmScheduler
@@ -30,7 +29,7 @@ func NewWatchdog(
 		return nil, ErrNilEndProcessChan
 	}
 	if check.IfNil(log) {
-		return nil, core2.ErrNilLogger
+		return nil, core.ErrNilLogger
 	}
 
 	return &watchdog{
@@ -55,7 +54,7 @@ func (w *watchdog) defaultWatchdogExpiry(watchdogID string) {
 	buffer := new(bytes.Buffer)
 	err := pprof.Lookup("goroutine").WriteTo(buffer, 1)
 	if err != nil {
-		w.log.Error("could not dump goroutines", "err", err)
+		w.log.Error("could not dump goroutines", "error", err)
 	}
 
 	w.log.Error("watchdog alarm has expired", "alarm", watchdogID)
